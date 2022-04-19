@@ -1,5 +1,7 @@
 config/*
 
+*.code-workspace
+
 # Logs
 logs
 *.log
