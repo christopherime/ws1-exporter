@@ -1,6 +1,7 @@
 # ws1-exporter
 
 > Version: 0.1.0
+
 > Current release: TBR
 
 Project in developement, no working version yet.
