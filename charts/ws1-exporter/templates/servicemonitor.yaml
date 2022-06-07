@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "ws1-exporter.fullname" . }}
+  labels:
+    {{- include "ws1-exporter.labels" . | nindent 4 }}
+spec:
+  endpoints:
+    - port: http
+  jobLabel: {{ include "ws1-exporter.fullname" . }}
+  selector:
+    matchLabels: {{ include "ws1-exporter.matchLabels" . | nindent 6 }}
