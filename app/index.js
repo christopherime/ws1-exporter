@@ -90,7 +90,7 @@ async function main() {
 	app.get('/healthz', (req, res) => {
 		res.send('OK');
 	});
-	
+
 	// Expose our metrics at the default URL for Prometheus
 	app.get('/metrics', async (req, res) => {
 		res.set('Content-Type', client.register.contentType);
