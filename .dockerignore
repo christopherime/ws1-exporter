@@ -7,3 +7,5 @@ app/test.js
 .eslintrc*
 .github
 .git
+
+*.md
