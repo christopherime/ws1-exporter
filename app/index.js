@@ -87,15 +87,19 @@ async function main() {
 		}, 0);
 	}
 
-	app.listen(process.env.WS1_EXPORTER_PORT, () => {
-		console.log('Listening on port ' + process.env.WS1_EXPORTER_PORT);
+	app.get('/healthz', (req, res) => {
+		res.send('OK');
 	});
-
+	
 	// Expose our metrics at the default URL for Prometheus
 	app.get('/metrics', async (req, res) => {
 		res.set('Content-Type', client.register.contentType);
 		res.send(await client.register.metrics());
 	});
 }
+
+app.listen(process.env.WS1_EXPORTER_PORT, () => {
+	console.log('Listening on port ' + process.env.WS1_EXPORTER_PORT);
+});
 
 main();
