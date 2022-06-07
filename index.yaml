@@ -3,6 +3,16 @@ entries:
   ws1-exporter:
   - apiVersion: v2
     appVersion: v0.1.1
+    created: "2022-06-07T12:14:40.099232368Z"
+    description: A Helm chart for Kubernetes
+    digest: 15a1a3b1be82554262d224095e1faf1a2d9678bd34de9354eb8bae94625eb32c
+    name: ws1-exporter
+    type: application
+    urls:
+    - https://github.com/christopherime/ws1-exporter/releases/download/ws1-exporter-0.1.2/ws1-exporter-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: v0.1.1
     created: "2022-06-07T11:02:55.43045512Z"
     description: A Helm chart for Kubernetes
     digest: 4b3b67d2b34bb130d9ec051aaba039d8657f0383963e3e54f21835b39fd64b86
