@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  ws1-exporter:
+    container_name: ws1-exporter
+    image: ghcr.io/christopherime/ws1-exporter:v0.1.4
+    environment:
+      - WS1_AUTH_KEY=${WS1_AUTH_KEY}
+      - WS1_TENANT_KEY=${WS1_TENANT_KEY}
+      - WS1_URL=${WS1_URL}
+      - WS1_EXPORTER_PORT=${WS1_EXPORTER_PORT}
+      - WS1_TENANT_NAME=${WS1_TENANT_NAME}
+    ports:
+      - 8080:8080
