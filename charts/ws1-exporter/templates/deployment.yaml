@@ -20,6 +20,10 @@ spec:
       labels:
         {{- include "ws1-exporter.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
