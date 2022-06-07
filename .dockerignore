@@ -1,6 +1,7 @@
 node_modules
 charts
 logs
+app/test.js
 
 .env
 .eslintrc*
