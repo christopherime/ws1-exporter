@@ -3,12 +3,14 @@ version: '3.8'
 services:
   ws1-exporter:
     container_name: ws1-exporter
-    image: ghcr.io/christopherime/ws1-exporter:v0.1.4
+    # Default latest tag for testing only, in PROD use a specific stable version
+    image: ghcr.io/christopherime/ws1-exporter:latest
     environment:
       - WS1_AUTH_KEY=${WS1_AUTH_KEY}
       - WS1_TENANT_KEY=${WS1_TENANT_KEY}
       - WS1_URL=${WS1_URL}
       - WS1_EXPORTER_PORT=${WS1_EXPORTER_PORT}
       - WS1_TENANT_NAME=${WS1_TENANT_NAME}
+    # host : container, 8080 arbitraly chosen, might change it later for a 9xxx port as most common for prom. exporter
     ports:
       - 8080:8080
