@@ -43,11 +43,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /metrics
+              path: /healthz
               port: http
           readinessProbe:
             httpGet:
-              path: /metrics
+              path: /healthz
               port: http
           env: 
             - name: WS1_AUTH_KEY
