@@ -1,9 +1,32 @@
 /* eslint-disable no-await-in-loop */
-'use strict';
+// 'use strict';
 
 require('dotenv').config();
 
 const axios = require('axios');
+
+const client = require('prom-client');
+
+// Enable prom-client to expose default application metrics
+const {collectDefaultMetrics} = client;
+
+// Define a custom prefix string for application metrics
+collectDefaultMetrics();
+
+const express = require('express');
+const app = express();
+
+const nDevices = new client.Gauge({
+	name: 'mdm_number_devices',
+	help: 'Number of devices',
+	labelNames: ['tenant'],
+});
+
+const imeiDevices = new client.Gauge({
+	name: 'mdm_imei_devices',
+	help: 'IMEI of devices',
+	labelNames: ['tenant', 'deviceName', 'imei'],
+});
 
 // CallAPI is a helper function to call the API
 function callAPI(urlIn, methodIn, headersIn, bodyIn) {
@@ -52,6 +75,27 @@ async function main() {
 	}
 
 	console.log(devicesList.length);
+
+	nDevices.set({tenant: process.env.WS1_TENANT_NAME}, devicesList.length);
+
+	// For devices in devicesList set the IMEI tag of imeiDevices to the imei of the Device
+	for (const device of devicesList) {
+		imeiDevices.set({
+			tenant: process.env.WS1_TENANT_NAME,
+			deviceName: device.DeviceFriendlyName,
+			imei: device.Imei,
+		}, 0);
+	}
+
+	app.listen(process.env.WS1_EXPORTER_PORT, () => {
+		console.log('Listening on port ' + process.env.WS1_EXPORTER_PORT);
+	});
+
+	// Expose our metrics at the default URL for Prometheus
+	app.get('/metrics', async (req, res) => {
+		res.set('Content-Type', client.register.contentType);
+		res.send(await client.register.metrics());
+	});
 }
 
 main();
