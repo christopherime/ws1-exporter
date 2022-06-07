@@ -45,6 +45,34 @@ spec:
             httpGet:
               path: /metrics
               port: http
+          env: 
+            - name: WS1_AUTH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ws1-exporter.fullname" . }}
+                  key: ws1AuthKey
+                  optional: false
+            - name: WS1_TENANT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ws1-exporter.fullname" . }}
+                  key: ws1TenantKey
+                  optional: false
+            - name: WS1_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ws1-exporter.fullname" . }}
+                  key: ws1Url
+                  optional: false
+            - name: WS1_TENANT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ws1-exporter.fullname" . }}
+                  key: ws1TenantName
+                  optional: false                                 
+            - name: WS1_EXPORTER_PORT
+              value: "8080"
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

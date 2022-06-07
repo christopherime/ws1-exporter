@@ -4,6 +4,11 @@
 
 replicaCount: 1
 
+ws1AuthKey: ""
+ws1TenantKey: ""
+ws1Url: ""
+ws1TenantName: ""
+
 image:
   repository: ghcr.io/christopherime/ws1-exporter
   pullPolicy: IfNotPresent
@@ -81,3 +86,4 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
