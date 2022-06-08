@@ -73,7 +73,13 @@ spec:
                 secretKeyRef:
                   name: {{ include "ws1-exporter.fullname" . }}
                   key: ws1TenantName
-                  optional: false                                 
+                  optional: false 
+            - name: WS1_INTERVAL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ws1-exporter.fullname" . }}
+                  key: ws1Interval
+                  optional: false                                  
             - name: WS1_EXPORTER_PORT
               value: "8080"
 
