@@ -1,7 +1,7 @@
 
 *.code-workspace
 
-app/test.js
+app/test*
 
 # Logs
 logs

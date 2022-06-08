@@ -8,6 +8,7 @@ ws1AuthKey: ""
 ws1TenantKey: ""
 ws1Url: ""
 ws1TenantName: ""
+ws1Interval: ""
 hostAliases: []
 
 image:

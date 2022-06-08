@@ -3,6 +3,8 @@
 
 require('dotenv').config();
 
+const {DateTime} = require('luxon');
+
 const axios = require('axios');
 
 const client = require('prom-client');
@@ -16,16 +18,19 @@ collectDefaultMetrics();
 const express = require('express');
 const app = express();
 
-const nDevices = new client.Gauge({
-	name: 'mdm_number_devices',
-	help: 'Number of devices',
-	labelNames: ['tenant'],
-});
-
-const imeiDevices = new client.Gauge({
-	name: 'mdm_imei_devices',
-	help: 'IMEI of devices',
-	labelNames: ['tenant', 'deviceName', 'imei'],
+const infoDevice = new client.Gauge({
+	name: 'info_devices',
+	help: 'Devices information for each enrolled device',
+	labelNames: [
+		'tenant',
+		'deviceName',
+		'assetnumber',
+		'serialnumber',
+		'imei',
+		'lastseen',
+		'online',
+		'deltaMinutes',
+	],
 });
 
 // CallAPI is a helper function to call the API
@@ -74,16 +79,22 @@ async function main() {
 		}
 	}
 
-	console.log(devicesList.length);
-
-	nDevices.set({tenant: process.env.WS1_TENANT_NAME}, devicesList.length);
-
 	// For devices in devicesList set the IMEI tag of imeiDevices to the imei of the Device
 	for (const device of devicesList) {
-		imeiDevices.set({
+		const now = DateTime.local();
+		// Correct the timezone of the LastSeen value by increasing it by 2 hours
+		const lastSeenVal = DateTime.fromISO(device.LastSeen).plus({hours: 2});
+		// If LastSeen Value is greater than now by WS1_INTERVAL in minutes, set online to false
+		const onlineState = now.diff(lastSeenVal).as('minutes') < process.env.WS1_INTERVAL;
+		infoDevice.set({
 			tenant: process.env.WS1_TENANT_NAME,
 			deviceName: device.DeviceFriendlyName,
+			assetnumber: device.AssetNumber,
+			serialnumber: device.SerialNumber,
 			imei: device.Imei,
+			lastseen: lastSeenVal,
+			online: onlineState,
+			deltaMinutes: now.diff(lastSeenVal).as('minutes'),
 		}, 0);
 	}
 

@@ -1,6 +1,6 @@
 {
   "name": "ws1-exporter",
-  "version": "1.0.0",
+  "version": "0.1.5",
   "description": "WorkspaceOne Prometheus Exporter",
   "main": "index.js",
   "scripts": {
