@@ -28,6 +28,7 @@ const infoDevice = new client.Gauge({
 		'lastseen',
 		'online',
 		'deltaMinutes',
+		'timeWeirdness',
 	],
 });
 
@@ -61,11 +62,11 @@ function getDevices(nbPage) {
 	);
 }
 
-async function main() {
-	// Get the inventory of the devices in the tenant
+// GetDevicesInventory is a helper function to get the inventory of the devices in the tenant and return it as an array
+async function getDevicesInventory() {
 	const responseBody = await getDevices(0);
 	const response = responseBody.data;
-	const devicesList = response.Devices;
+	const devicesListParse = response.Devices;
 	const totalDevices = response.Total;
 	// TotalPages is the number of pages in the response, default and max PageSize is 500
 	const totalPages = Math.ceil(totalDevices / response.PageSize);
@@ -74,29 +75,45 @@ async function main() {
 	if (totalPages > 1) {
 		for (let i = 1; i < totalPages; i++) {
 			const devices = await getDevices(i);
-			devicesList.push(...devices.data.Devices);
+			devicesListParse.push(...devices.data.Devices);
 		}
 	}
 
+	return devicesListParse;
+}
+
+function deltaTimeMinutes(lastSeen) {
+	const now = DateTime.local().toUTC();
+	const lastSeenVal = DateTime.fromISO(lastSeen, {zone: 'utc'});
+	return now.diff(lastSeenVal).as('minutes').toFixed(2);
+}
+
+function infoDevicesMetrics(listDevices) {
 	// For devices in devicesList set the IMEI tag of imeiDevices to the imei of the Device
-	for (const device of devicesList) {
-		const now = DateTime.local();
-		// Correct the timezone of the LastSeen value by increasing it by 2 hours
-		const lastSeenVal = DateTime.fromISO(device.LastSeen).plus({hours: 2});
+	for (const device of listDevices) {
+		const deltaTimeMinutesVal = deltaTimeMinutes(device.LastSeen);
 		// If LastSeen Value is greater than now by WS1_INTERVAL in minutes, set online to false
-		const onlineState = now.diff(lastSeenVal).as('minutes') < process.env.WS1_INTERVAL;
+		const onlineState = deltaTimeMinutesVal < process.env.WS1_INTERVAL;
 		infoDevice.set({
 			tenant: process.env.WS1_TENANT_NAME,
 			deviceName: device.DeviceFriendlyName,
 			assetnumber: device.AssetNumber,
 			serialnumber: device.SerialNumber,
 			imei: device.Imei,
-			lastseen: lastSeenVal,
+			lastseen: device.LastSeen,
 			online: onlineState,
-			deltaMinutes: now.diff(lastSeenVal).as('minutes'),
+			deltaMinutes: deltaTimeMinutesVal,
+			timeWeirdness: (deltaTimeMinutesVal < 0) ? 'weird' : 'normal',
 		}, 0);
 	}
+}
 
+async function main() {
+	// Get the inventory of the devices in the tenant
+	const devicesList = await getDevicesInventory();
+	// Generate the infoDevice metrics with devicesList
+	infoDevicesMetrics(devicesList);
+	// Health check endpoint
 	app.get('/healthz', (req, res) => {
 		res.send('OK');
 	});

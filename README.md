@@ -51,18 +51,19 @@ Default: 8080
 
 ```javascript
 const infoDevice = new client.Gauge({
-name: 'info_devices',
-help: 'Devices information for each enrolled device',
-labelNames: [
-    'tenant',
-    'deviceName',
-    'assetnumber',
-    'serialnumber',
-    'imei',
-    'lastseen',
-    'online',
-    'deltaMinutes',
-],
+	name: 'info_devices',
+	help: 'Devices information for each enrolled device',
+	labelNames: [
+		'tenant', // tenant name
+		'deviceName', // device Friendly Name
+		'assetnumber', // device asset number
+		'serialnumber', // device serial number
+		'imei', // device IMEI
+		'lastseen', // device last seen value in UTC
+		'online', // device online status, true if deltaMinutes < WS1_INTERVAL
+		'deltaMinutes', // difference in minutes between lastseen and now in UTC
+		'timeWeirdness', // is "weird" time if deltaMinutes negative, meaning lastseen is in advance compared to now (timezone issue on the device maybe...)
+	],
 });
 ```
 
