@@ -1,8 +1,7 @@
 # ws1-exporter
 
-> Version: 0.1.0
-
-> Current release: TBR
+> Unstable Version: 0.2.0
+> Stable Version: 1.0.0 (target)
 
 Project in developement, no working version yet.
 
