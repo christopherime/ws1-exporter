@@ -9,3 +9,9 @@
 - [ ] update the README from informations of the config done
 - [ ] integrate testing (nice to have) and how to make it
 - [ ] find some sleep
+- [ ] Make the following metrics:
+- [ ] **mdm_device_count**: Number of devices in the park
+- [ ] **device_count_by_type**: Number of devices by type
+- [ ] **device_count_by_status**: Number of devices by status
+- [ ] **devices_count_offline**: Number of offline devices
+- [ ] **devices_count_online**: Number of online devices

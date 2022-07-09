@@ -28,11 +28,22 @@ Default: 8080
 
 ## Metrics
 
-- **mdm_device_count**: Number of devices in the park
-- **device_count_by_type**: Number of devices by type
-- **device_count_by_status**: Number of devices by status
-- **devices_count_offline**: Number of offline devices
-- **devices_count_online**: Number of online devices
+```javascript
+const infoDevice = new client.Gauge({
+name: 'info_devices',
+help: 'Devices information for each enrolled device',
+labelNames: [
+    'tenant',
+    'deviceName',
+    'assetnumber',
+    'serialnumber',
+    'imei',
+    'lastseen',
+    'online',
+    'deltaMinutes',
+],
+});
+```
 
 ## Getting Started
 
