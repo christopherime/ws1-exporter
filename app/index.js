@@ -1,7 +1,5 @@
 /* eslint-disable no-await-in-loop */
-// 'use strict';
-
-require('dotenv').config();
+'use strict';
 
 const {DateTime} = require('luxon');
 

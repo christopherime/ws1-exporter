@@ -1,6 +1,19 @@
 version: '3.8'
+networks:
+  mdm-observ:
 
 services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - mdm-observ
+
   ws1-exporter:
     container_name: ws1-exporter
     # Default latest tag for testing only, in PROD use a specific stable version
@@ -15,3 +28,5 @@ services:
     # host : container, 8080 arbitraly chosen, might change it later for a 9xxx port as most common for prom. exporter
     ports:
       - 8080:8080
+    networks:
+      - mdm-observ
