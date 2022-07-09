@@ -38,6 +38,7 @@ function callAPI(urlIn, methodIn, headersIn, bodyIn) {
 		url: urlIn,
 		headers: headersIn,
 		data: bodyIn,
+		rejectUnauthorized: process.env.WS1_INSECURE_TLS,
 	};
 	try {
 		return axios(config);
