@@ -25,6 +25,9 @@ services:
       - WS1_EXPORTER_PORT=${WS1_EXPORTER_PORT}
       - WS1_TENANT_NAME=${WS1_TENANT_NAME}
       - WS1_INTERVAL=${WS1_INTERVAL}
+      - WS1_LGID=${WS1_LGID}
+      - TZ=${TZ}
+      - WS1_INSECURE_TLS=false
     # host : container, 8080 arbitraly chosen, might change it later for a 9xxx port as most common for prom. exporter
     ports:
       - 8080:8080
