@@ -3,7 +3,7 @@
 > Unstable Version: 0.2.0
 > Stable Version: 1.0.0 (target)
 
-Project in developement, no working version yet.
+Project in development, no working version yet.
 
 ## Description
 
@@ -14,12 +14,12 @@ It's an exporter that queries the WorkspaceOne API and exposes metrics regarding
 
 ### /metrics
 
-Http Method: GET | Http Status: 200 | Content-Type: text/plain
+HTTP Method: GET | HTTP Status: 200 | Content-Type: text/plain
 Provide OpenMetrics format.
 
 ### /healthz
 
-Http Method: GET | Http Status: 200
+HTTP Method: GET | HTTP Status: 200
 Health check for the service exporter
 
 ## ports
@@ -42,4 +42,4 @@ Default: 8080
 docker-compose up
 ```
 
-It will spin up a prometheus scrapper on port localhost:9090 and the ws1-exporter on port localhost:8080
+It will spin up a Prometheus scrapper on port localhost:9090 and the ws1-exporter on port localhost:8080
